@@ -5,8 +5,6 @@ date: "December 20, 2015"
 output: html_document
 ---
 
-
-## Loading and preprocessing the data
 To complete the assignment, the data first needed to be read in, and processed by removing any NA values. Any necessary packages were also loaded at this point.
 
 ```{r, Processing Data, message = F}
@@ -20,9 +18,6 @@ activityComplete <- read.csv("activity.csv", header = TRUE)
 notNA <- !is.na(activityComplete$steps)
 activity <- activityComplete[notNA, ]
 ```
-
-
-## What is mean total number of steps taken per day?
 
 The next step is to find the total number of steps in a day and find the mean and median of the total number of steps per day, as done by the code below.
 ``` {r, total steps}
@@ -43,9 +38,6 @@ hist(dailySteps$`sum(steps)`, breaks = 5, col = "blue", main = "Histogram Of Tot
 abline(v = medianSteps, lwd = 2, col = "orange")
 mtext(text = paste("Median Steps = ", as.character(medianSteps)), at = c(medianSteps))
 ```
-
-## What is the average daily activity pattern?
-
 
 Next we needed to find the average number of steps taken during each time interval. The code below performed all necessary calculations.
 ```{r, mean steps}
@@ -69,8 +61,6 @@ plot(intervalSteps$interval, intervalSteps$`mean(steps)`, type = "l", main = "Av
 mtext(paste("Max Steps = ", as.character(maxStepsDisplay), "at interval", as.character(topInterval)), at = topInterval)
 ```
 
-## Imputing missing values
-
 Now we will decide what to do with all missing values. First we create a new data set and calculate how many missing values there are. The code below does this.
 ```{r, Total NA}
 newActivityComplete <- activityComplete
@@ -91,6 +81,7 @@ for (i in 1:nrow(newActivityComplete)) {
   
 }
 ```
+
 Now we will recalculate the mean and median to see if filling in the missing values made a difference.
 ```{r, New Values}
 newActivityComplete <- group_by(newActivityComplete, date)
@@ -110,8 +101,7 @@ hist(newDailySteps$`sum(steps)`, breaks = 5, col = "blue", main = "Histogram Of 
 abline(v = newMedianSteps, lwd = 2, col = "orange")
 mtext(text = paste("New Median Steps = ", as.character(newMedianSteps)), at = c(newMedianSteps))
 ```
-## Are there differences in activity patterns between weekdays and weekends?
-
+  
 Finally, we want to see if there are any difference in activity patterns on weekdays and weekends. We will need to use the data set with no missing values. First, we will need to covert the date column from factor to date and then add a column that indicates whether the date occured on a weekday or weekend.
 
 ```{r, Adding Weekdays}
